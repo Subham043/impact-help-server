@@ -11,13 +11,8 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
         type: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue:1
-        },
-        course: {
-            type: DataTypes.TEXT,
-            allowNull: false,
+          type: DataTypes.STRING,
+          allowNull: false
         },
         description: {
             type: DataTypes.TEXT,

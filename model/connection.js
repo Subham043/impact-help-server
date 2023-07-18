@@ -7,8 +7,9 @@ const { Sequelize, DataTypes } = require("sequelize");
 //     pool: { max: 5, min: 0, idle: 10000 }
 // })
 
-const sequelize = new Sequelize('a5inepro_impactschool', 'a5inepro_impactuser', 'subham88676',{
-    host:'162.251.85.215',
+const sequelize = new Sequelize('impact_app', 'root', 'impact',{
+    host:'127.0.0.1',
+    port: '4306',
     dialect: 'mysql',
     logging: false, //sql query logging in console
     pool:{max:5,min:0,idle:10000}

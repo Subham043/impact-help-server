@@ -25,9 +25,8 @@ router.post('/create',
     //custom validation for email
     body('email').custom(async (value) => emailValidation(value)),
     //custom validation for password
-    body('type').custom(async (value) => IDValidation(value, 'type')),
+    body('type').custom(async (value) => textValidation(value, 'type')),
     body('priority').custom(async (value) => IDValidation(value, 'priority')),
-    body('course').custom(async (value) => textValidation(value, 'course')),
     body('description').custom(async (value) => emptyTextValidation(value, 'description')),
     body('upload').custom(async (value, { req }) => {
         if (req?.files) {
@@ -80,8 +79,8 @@ router.post('/create',
                 errors: errors.mapped(),
             });
         } else {
-            let { title, email, type, course, description, priority } = req.body;
-            let ticketData = await create(title, email, type, course, description, priority, req.payload.id)
+            let { title, email, type, description, priority } = req.body;
+            let ticketData = await create(title, email, type, description, priority, req.payload.id)
             if (ticketData.error == false && req?.files) {
                 const file = req.files.upload;
                 if (Array.isArray(file)) {
@@ -126,8 +125,8 @@ router.post('/create',
                     id: ticketData.data.id
                 })
                 // console.log(initiationTicketMail(ticketMailData.data));
-                let msg = await initiationTicketMail(ticketMailData.data)
-                await syncMail(ticketMailData.data.user.dataValues.email,"Impact School Help Desk #"+ticketMailData.data.id,msg)
+                // let msg = await initiationTicketMail(ticketMailData.data)
+                // await syncMail(ticketMailData.data.user.dataValues.email,"Impact School Help Desk #"+ticketMailData.data.id,msg)
             }
             return res.status(ticketData.status).json({
                 message: ticketData.message,
@@ -268,9 +267,8 @@ router.post('/edit/:id',
     //custom validation for email
     body('email').custom(async (value) => emailValidation(value)),
     //custom validation for password
-    body('type').custom(async (value) => IDValidation(value, 'type')),
+    body('type').custom(async (value) => textValidation(value, 'type')),
     body('priority').custom(async (value) => IDValidation(value, 'priority')),
-    body('course').custom(async (value) => textValidation(value, 'course')),
     body('description').custom(async (value) => emptyTextValidation(value, 'description')),
     body('upload').custom(async (value, { req }) => {
         if (req?.files) {
@@ -324,8 +322,8 @@ router.post('/edit/:id',
                 errors: errors.mapped(),
             });
         } else {
-            let { title, email, type, course, description, priority } = req.body;
-            let updateData = await update({ id: req.params.id, userId: req.payload.id }, { title, email, type, course, description, priority })
+            let { title, email, type, description, priority } = req.body;
+            let updateData = await update({ id: req.params.id, userId: req.payload.id }, { title, email, type, description, priority })
             if (updateData.error == false && req?.files) {
                 const file = req.files.upload;
                 if (Array.isArray(file)) {
@@ -730,9 +728,8 @@ body('title').custom(async (value) => textValidation(value, 'title')),
 //custom validation for email
 body('email').custom(async (value) => emailValidation(value)),
 //custom validation for password
-body('type').custom(async (value) => IDValidation(value, 'type')),
+body('type').custom(async (value) => textValidation(value, 'type')),
 body('priority').custom(async (value) => IDValidation(value, 'priority')),
-body('course').custom(async (value) => textValidation(value, 'course')),
 body('description').custom(async (value) => emptyTextValidation(value, 'description')),
 body('upload').custom(async (value, { req }) => {
     if (req?.files) {
@@ -786,8 +783,8 @@ async function (req, res) {
             errors: errors.mapped(),
         });
     } else {
-        let { userId, title, email, type, course, description, priority, status } = req.body;
-        let updateData = await update({ id: req.params.id }, { title, email, type, course, description, priority, status })
+        let { userId, title, email, type, description, priority, status } = req.body;
+        let updateData = await update({ id: req.params.id }, { title, email, type, description, priority, status })
         if (updateData.error == false && req?.files) {
             const file = req.files.upload;
             if (Array.isArray(file)) {
@@ -914,16 +911,16 @@ router.post('/admin/status/:id',
                 let ticketMailData = await getTicketUser({
                     id: req.params.id
                 })
-                let msg = await waitTicketMail(ticketMailData.data)
-                await syncMail(ticketMailData.data.user.dataValues.email,"Impact School Help Desk #"+ticketMailData.data.id,msg)
+                // let msg = await waitTicketMail(ticketMailData.data)
+                // await syncMail(ticketMailData.data.user.dataValues.email,"Impact School Help Desk #"+ticketMailData.data.id,msg)
             }
 
             if(updateData.error===false && status==4){
                 let ticketMailData = await getTicketUser({
                     id: req.params.id
                 })
-                let msg = await closeTicketMail(ticketMailData.data)
-                await syncMail(ticketMailData.data.user.dataValues.email,"Impact School Help Desk #"+ticketMailData.data.id,msg)
+                // let msg = await closeTicketMail(ticketMailData.data)
+                // await syncMail(ticketMailData.data.user.dataValues.email,"Impact School Help Desk #"+ticketMailData.data.id,msg)
             }
             
             return res.status(updateData.status).json({

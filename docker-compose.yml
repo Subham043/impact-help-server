@@ -1,0 +1,35 @@
+version: '3'
+
+networks:
+  impact_laravel:
+
+
+services:
+
+  mysql:
+    image: mariadb:10.5.8
+    container_name: impact_mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "4306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    env_file:
+      - .env
+    networks:
+      - impact_laravel
+
+  phpmyadmin:
+    container_name: impact_admin
+    depends_on:
+      - mysql
+    # image: phpmyadmin/phpmyadmin
+    image: arm64v8/phpmyadmin
+    restart: always
+    ports:
+      - '8086:80'
+    env_file:
+      - .env
+    networks:
+      - impact_laravel

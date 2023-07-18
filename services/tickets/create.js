@@ -1,9 +1,9 @@
 const db = require('../../model/connection');
 const Tickets = db.tickets;
 
-const create = async(title, email, type, course, description, priority, userId) => {
+const create = async(title, email, type, description, priority, userId) => {
     try {
-        let userData = await Tickets.create({ title, email, type, course, description, priority, userId })
+        let userData = await Tickets.create({ title, email, type, description, priority, userId })
         let response = {
             status: 201,
             message: 'Ticket created successfully',

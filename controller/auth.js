@@ -49,7 +49,7 @@ router.post('/register',
             }
             
             try {
-                await asyncMail(userData.data.email, 'Email Verification', `<h3>Your otp is ${userData.data.otp}</h3><br>`);
+                // await asyncMail(userData.data.email, 'Email Verification', `<h3>Your otp is ${userData.data.otp}</h3><br>`);
                 return res.status(200).json({
                     message: 'Kindly check your email for verification process',
                     id: encrypt(userData.data.id)
@@ -143,7 +143,7 @@ router.post('/forgot-password',
             const otp = (Math.floor(100000 + Math.random() * 900000));
             let userData = await  update({email, verified: 1}, { otp, changePassword: 1, })
             
-            syncMail(email, 'Reset Password', `<h3>Your otp is ${otp}</h3><br>`);
+            // syncMail(email, 'Reset Password', `<h3>Your otp is ${otp}</h3><br>`);
             return res.status(200).json({
                 message: 'Kindly check your email in order to reset your password',
                 id: encrypt(data.data.id)
